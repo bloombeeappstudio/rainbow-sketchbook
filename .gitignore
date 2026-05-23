@@ -1,0 +1,35 @@
+# ─── 보안 (절대 push 금지) ─────────────────────────────
+# Keystore 파일 — 분실 시 앱 영구 업데이트 불가
+*.jks
+*.keystore
+keystore.properties
+keystore.properties.local
+google-services.json
+
+# Capacitor 빌드 산출물
+game/android/app/build/
+game/android/build/
+game/android/.gradle/
+game/android/captures/
+game/android/local.properties
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite 빌드 결과
+game/dist/
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+desktop.ini
+
+# Claude 임시
+.claude-tmp/

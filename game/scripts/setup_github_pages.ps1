@@ -74,7 +74,7 @@ Write-Host "[OK] user.name  = bloombeeappstudio" -ForegroundColor Green
 Write-Host ""
 Write-Host "[STEP 4] Staging files..." -ForegroundColor Cyan
 Write-Host "  Options:" -ForegroundColor White
-Write-Host "    1. docs-site/ only       (legal docs only — RECOMMENDED for first push)" -ForegroundColor White
+Write-Host "    1. docs/ only       (legal docs only — RECOMMENDED for first push)" -ForegroundColor White
 Write-Host "    2. Entire project        (game code + docs + assets)" -ForegroundColor White
 Write-Host ""
 $stageChoice = Read-Host "Choose (1 or 2)"
@@ -84,10 +84,10 @@ if ($stageChoice -eq "2") {
     git add .
     Write-Host "[OK] All files staged (jks/properties/google-services excluded)" -ForegroundColor Green
 } else {
-    Write-Host "  Staging docs-site/ only..." -ForegroundColor White
-    git add docs-site/
+    Write-Host "  Staging docs/ only..." -ForegroundColor White
+    git add docs/
     git add .gitignore
-    Write-Host "[OK] docs-site/ + .gitignore staged" -ForegroundColor Green
+    Write-Host "[OK] docs/ + .gitignore staged" -ForegroundColor Green
 }
 
 # ─── Commit ────────────────────────────────────────────
@@ -151,7 +151,7 @@ Write-Host ""
 Write-Host "  1. Open: https://github.com/bloombeeappstudio/rainbow-sketchbook/settings/pages" -ForegroundColor White
 Write-Host "  2. Source: 'Deploy from a branch'" -ForegroundColor White
 Write-Host "  3. Branch: main" -ForegroundColor White
-Write-Host "  4. Folder: /docs-site" -ForegroundColor White
+Write-Host "  4. Folder: /docs" -ForegroundColor White
 Write-Host "  5. Click Save" -ForegroundColor White
 Write-Host "  6. Wait 1-2 minutes" -ForegroundColor White
 Write-Host ""

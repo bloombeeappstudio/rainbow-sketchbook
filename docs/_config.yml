@@ -1,0 +1,37 @@
+# GitHub Pages Jekyll 설정 — 레인보우 스케치북 정책 문서
+title: Rainbow Sketchbook
+description: Bloombee App Studio — 정책 문서
+author: Bloombee App Studio
+email: bloombee.appstudio@gmail.com
+
+# 마크다운 → HTML 자동 변환
+markdown: kramdown
+highlighter: rouge
+
+# 테마 (GitHub Pages 기본)
+theme: jekyll-theme-minimal
+
+# 파일 처리
+include:
+  - "*.md"
+  - "*.html"
+
+# ⚠️ Pages 빌드에서 제외 (내부용 문서/자산 — 법적 문서만 공개)
+#   docs/는 원래 게임 디자인 문서용 폴더였으나, GitHub Pages가 /docs만
+#   source folder로 지원해서 통합. 법적 문서 외에는 모두 exclude.
+exclude:
+  - archive
+  - legal
+  - release
+  - store_meta
+  - asset_creation_guide.md
+  - asset_list.md
+  - development_roadmap.md
+  - game_design.md
+  - items_master_list.md
+  - toseumi_character_guide.md
+  - play_store_icon.png
+  - site-README.md
+
+# Jekyll 메타데이터
+permalink: /:basename

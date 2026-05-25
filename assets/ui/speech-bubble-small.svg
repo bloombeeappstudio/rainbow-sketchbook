@@ -1,0 +1,8 @@
+<svg width="800" height="240" viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+  <g fill="rgba(255, 255, 255, 0.9)">
+    <!-- 말풍선 몸통 -->
+    <rect x="0" y="30" width="800" height="210" rx="40" ry="40" />
+    <!-- 꼬리 부분 -->
+    <polygon points="400,0 370,35 430,35" />
+  </g>
+</svg>

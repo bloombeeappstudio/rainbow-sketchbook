@@ -1,0 +1,12 @@
+{
+  "name": "rainbow-sketchbook-scripts",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "remove-bg": "node remove-bg.mjs"
+  },
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5"
+  }
+}

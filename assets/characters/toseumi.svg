@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480">
+  <!-- Toseum-i — Pink Rabbit Mascot v1.0 -->
+  <defs>
+    <radialGradient id="bodyGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFE4EC"/>
+      <stop offset="60%" stop-color="#FFD1DC"/>
+      <stop offset="100%" stop-color="#FFB6C8"/>
+    </radialGradient>
+    <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFA0B4" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#FFA0B4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="earInnerGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFC8D8"/>
+      <stop offset="100%" stop-color="#FF9FB8"/>
+    </radialGradient>
+    <radialGradient id="eyeShine" cx="30%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Soft floating shadow -->
+  <ellipse cx="200" cy="455" rx="90" ry="10" fill="#000" opacity="0.08"/>
+
+  <!-- Body (rounded marshmallow shape) -->
+  <ellipse cx="200" cy="340" rx="115" ry="100" fill="url(#bodyGrad)"/>
+  <!-- White belly patch -->
+  <ellipse cx="200" cy="360" rx="65" ry="55" fill="#FFFFFF" opacity="0.95"/>
+
+  <!-- Feet (peeking under body) -->
+  <ellipse cx="155" cy="430" rx="28" ry="14" fill="#FFFFFF" stroke="#FFB6C8" stroke-width="2"/>
+  <ellipse cx="245" cy="430" rx="28" ry="14" fill="#FFFFFF" stroke="#FFB6C8" stroke-width="2"/>
+  <!-- Tiny pink paw pads -->
+  <ellipse cx="155" cy="430" rx="10" ry="5" fill="#FFA0B4" opacity="0.55"/>
+  <ellipse cx="245" cy="430" rx="10" ry="5" fill="#FFA0B4" opacity="0.55"/>
+
+  <!-- Tiny waving paws beside body -->
+  <ellipse cx="105" cy="320" rx="22" ry="28" fill="url(#bodyGrad)"/>
+  <ellipse cx="295" cy="320" rx="22" ry="28" fill="url(#bodyGrad)"/>
+
+  <!-- Ears (rounded, short — solhmungchi style) -->
+  <!-- Left ear -->
+  <ellipse cx="135" cy="100" rx="32" ry="62" fill="url(#bodyGrad)" transform="rotate(-12 135 100)"/>
+  <ellipse cx="135" cy="105" rx="18" ry="44" fill="url(#earInnerGrad)" transform="rotate(-12 135 105)"/>
+  <!-- Star inside left ear -->
+  <path d="M 130 95 L 133 102 L 141 102 L 134 107 L 137 115 L 130 110 L 123 115 L 126 107 L 119 102 L 127 102 Z" fill="#FFFACD" stroke="#FFD700" stroke-width="1" transform="rotate(-12 130 105)"/>
+
+  <!-- Right ear -->
+  <ellipse cx="265" cy="100" rx="32" ry="62" fill="url(#bodyGrad)" transform="rotate(12 265 100)"/>
+  <ellipse cx="265" cy="105" rx="18" ry="44" fill="url(#earInnerGrad)" transform="rotate(12 265 105)"/>
+  <!-- Star inside right ear -->
+  <path d="M 270 95 L 273 102 L 281 102 L 274 107 L 277 115 L 270 110 L 263 115 L 266 107 L 259 102 L 267 102 Z" fill="#FFFACD" stroke="#FFD700" stroke-width="1" transform="rotate(12 270 105)"/>
+
+  <!-- Head (large round) -->
+  <circle cx="200" cy="195" r="115" fill="url(#bodyGrad)"/>
+
+  <!-- Cheek blushes -->
+  <ellipse cx="125" cy="225" rx="22" ry="14" fill="url(#cheekGrad)"/>
+  <ellipse cx="275" cy="225" rx="22" ry="14" fill="url(#cheekGrad)"/>
+
+  <!-- Eyes (big, sparkly) -->
+  <!-- Left eye -->
+  <ellipse cx="160" cy="195" rx="20" ry="24" fill="#1A1A2E"/>
+  <circle cx="155" cy="187" r="7" fill="#ffffff"/>
+  <circle cx="167" cy="200" r="3" fill="#ffffff"/>
+  <ellipse cx="160" cy="195" rx="22" ry="26" fill="url(#eyeShine)" opacity="0.4"/>
+  <!-- Right eye -->
+  <ellipse cx="240" cy="195" rx="20" ry="24" fill="#1A1A2E"/>
+  <circle cx="235" cy="187" r="7" fill="#ffffff"/>
+  <circle cx="247" cy="200" r="3" fill="#ffffff"/>
+  <ellipse cx="240" cy="195" rx="22" ry="26" fill="url(#eyeShine)" opacity="0.4"/>
+
+  <!-- Mouth (tiny smile) -->
+  <path d="M 188 240 Q 200 252 212 240" stroke="#5A2A40" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- Nose hint -->
+  <ellipse cx="200" cy="228" rx="3" ry="2" fill="#5A2A40" opacity="0.7"/>
+</svg>

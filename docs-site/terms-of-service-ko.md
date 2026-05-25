@@ -91,5 +91,5 @@ permalink: /terms-of-service-ko/
 ---
 
 **문의처**:
-- 이메일: bloombee.apps@gmail.com
+- 이메일: bloombee.appstudio@gmail.com
 - 답변 시한: 7영업일 이내

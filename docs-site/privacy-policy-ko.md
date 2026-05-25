@@ -118,7 +118,7 @@ permalink: /privacy-policy-ko/
 
 본 방침이나 개인정보 처리에 관한 문의는 아래 이메일로 연락주세요:
 
-- **이메일**: bloombee.apps@gmail.com
+- **이메일**: bloombee.appstudio@gmail.com
 - **답변 시한**: 7영업일 이내
 
 ---

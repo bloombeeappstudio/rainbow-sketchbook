@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>레인보우 스케치북</title>
+
+  <!-- 한글 무료 상업용 폰트 (Google Fonts) -->
+  <!-- Jua: 둥글둥글 친근한 메인 폰트 / Do Hyeon: 굵고 또렷한 보조 / Gaegu: 손글씨 느낌 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Do+Hyeon&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0F0820; }
+    body { display: flex; align-items: center; justify-content: center; font-family: 'Jua', 'Do Hyeon', 'Pretendard', sans-serif; }
+    #game { width: 100%; height: 100%; }
+
+    /* 세로 모드 안내 (실제 모바일 디바이스에서만) */
+    .rotate-notice { display: none; }
+    @media (orientation: portrait) and (pointer: coarse) and (hover: none) {
+      .rotate-notice {
+        display: flex;
+        position: fixed; inset: 0; z-index: 9999;
+        background: linear-gradient(135deg, #4A2D6E, #2C1B47);
+        align-items: center; justify-content: center; flex-direction: column;
+        text-align: center; padding: 40px; color: #fff;
+      }
+      .rotate-notice .phone {
+        font-size: 80px;
+        animation: rotate 2s ease-in-out infinite;
+        margin-bottom: 24px;
+      }
+      @keyframes rotate { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-90deg); } }
+      #game { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="rotate-notice">
+    <div class="phone">📱</div>
+    <h2 style="font-size:24px;margin-bottom:8px;">화면을 가로로 돌려주세요!</h2>
+    <p style="font-size:16px;opacity:0.8;">레인보우 스케치북은 가로 모드에서 가장 예뻐요 🌈</p>
+  </div>
+  <div id="game"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

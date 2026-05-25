@@ -1,0 +1,8 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+  <g fill="rgba(255, 255, 255, 0.9)">
+    <!-- 말풍선 몸통 (둥근 모서리) -->
+    <rect x="0" y="40" width="1200" height="320" rx="60" ry="60" />
+    <!-- 꼬리 부분 (캐릭터를 향해 위로 솟은 형태) -->
+    <polygon points="600,0 560,45 640,45" />
+  </g>
+</svg>

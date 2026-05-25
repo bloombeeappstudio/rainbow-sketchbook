@@ -4,11 +4,11 @@
 
 ## 🌐 공개 URL (호스팅 후 예상)
 
-- **랜딩**: `https://bloombeeapps.github.io/rainbow-sketchbook/`
-- **개인정보 처리방침 (한)**: `https://bloombeeapps.github.io/rainbow-sketchbook/privacy-policy-ko/`
-- **Privacy Policy (en)**: `https://bloombeeapps.github.io/rainbow-sketchbook/privacy-policy-en/`
-- **이용약관 (한)**: `https://bloombeeapps.github.io/rainbow-sketchbook/terms-of-service-ko/`
-- **Terms of Service (en)**: `https://bloombeeapps.github.io/rainbow-sketchbook/terms-of-service-en/`
+- **랜딩**: `https://bloombeeappstudio.github.io/rainbow-sketchbook/`
+- **개인정보 처리방침 (한)**: `https://bloombeeappstudio.github.io/rainbow-sketchbook/privacy-policy-ko/`
+- **Privacy Policy (en)**: `https://bloombeeappstudio.github.io/rainbow-sketchbook/privacy-policy-en/`
+- **이용약관 (한)**: `https://bloombeeappstudio.github.io/rainbow-sketchbook/terms-of-service-ko/`
+- **Terms of Service (en)**: `https://bloombeeappstudio.github.io/rainbow-sketchbook/terms-of-service-en/`
 
 > 위 URL을 Google Play Console "Privacy Policy URL" 필드에 그대로 입력.
 
@@ -30,7 +30,7 @@ git init
 git add docs-site/
 git commit -m "Initial: legal docs for Rainbow Sketchbook"
 git branch -M main
-git remote add origin https://github.com/bloombeeapps/rainbow-sketchbook.git
+git remote add origin https://github.com/bloombeeappstudio/rainbow-sketchbook.git
 git push -u origin main
 ```
 
@@ -47,7 +47,7 @@ git push -u origin main
 - 위 "공개 URL" 4개를 브라우저에서 직접 접속 → 모두 정상 표시되는지 확인
 
 ### 5. Play Console에 URL 입력
-- Play Console → 앱 콘텐츠 → 개인정보 처리방침 → URL: `https://bloombeeapps.github.io/rainbow-sketchbook/privacy-policy-ko/`
+- Play Console → 앱 콘텐츠 → 개인정보 처리방침 → URL: `https://bloombeeappstudio.github.io/rainbow-sketchbook/privacy-policy-ko/`
 
 ---
 
@@ -81,4 +81,4 @@ cp docs/legal/privacy_policy_ko.md docs-site/privacy-policy-ko.md
 ## 메타
 
 - 최초 작성: 2026-05-22
-- 계정: bloombeeapps / bloombee.apps@gmail.com
+- 계정: bloombeeappstudio / bloombee.appstudio@gmail.com

@@ -1,8 +1,8 @@
 # GitHub Pages Jekyll 설정 — 레인보우 스케치북 정책 문서
 title: Rainbow Sketchbook
-description: Bloombee Apps — 정책 문서
-author: Bloombee Apps
-email: bloombee.apps@gmail.com
+description: Bloombee App Studio — 정책 문서
+author: Bloombee App Studio
+email: bloombee.appstudio@gmail.com
 
 # 마크다운 → HTML 자동 변환
 markdown: kramdown

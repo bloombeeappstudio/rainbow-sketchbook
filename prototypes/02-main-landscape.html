@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>레인보우 스케치북 — 메인 화면 v0.2 (Landscape)</title>
+<style>
+  /* ---------- 리셋 ---------- */
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    user-select: none;
+    background: #0F0820;
+  }
+
+  /* ---------- 세로 모드 안내 (가로로 돌려주세요) ---------- */
+  .rotate-notice {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, #4A2D6E, #2C1B47);
+    align-items: center; justify-content: center; flex-direction: column;
+    text-align: center; padding: 40px;
+  }
+  .rotate-notice .phone {
+    font-size: 80px;
+    animation: rotate 2s ease-in-out infinite;
+    margin-bottom: 24px;
+  }
+  @keyframes rotate {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-90deg); }
+  }
+  .rotate-notice h2 { font-size: 24px; margin-bottom: 8px; }
+  .rotate-notice p { font-size: 16px; opacity: 0.8; }
+  @media (orientation: portrait) and (max-width: 900px) {
+    .rotate-notice { display: flex; }
+    .stage { display: none; }
+  }
+
+  /* ---------- 우주 배경 ---------- */
+  .stage {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 30%, #5B3A8C 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, #7A4FA0 0%, transparent 50%),
+      linear-gradient(180deg, #1A0F2E 0%, #2C1B47 50%, #0F0820 100%);
+  }
+  .stars { position: absolute; inset: 0; pointer-events: none; }
+  .star {
+    position: absolute; background: #fff; border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* 큰 별빛 점 (장식) */
+  .big-star {
+    position: absolute;
+    color: #FFE08A;
+    font-size: 24px;
+    opacity: 0.6;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+
+  /* ---------- 메인 가로 레이아웃 ---------- */
+  .layout {
+    position: relative;
+    width: 100%; height: 100vh;
+    display: grid;
+    grid-template-columns: 45% 55%;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      "topbar topbar"
+      "left right";
+    padding: 16px 24px;
+    gap: 16px;
+  }
+
+  /* ---------- 상단바 ---------- */
+  .topbar {
+    grid-area: topbar;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topbar-title {
+    font-size: 18px; font-weight: 800;
+    background: linear-gradient(90deg, #FFB6C8, #B19CFF, #7FD8C0, #FFD93D);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 1px;
+  }
+  .icon-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: none; color: #fff; font-size: 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s;
+  }
+  .icon-btn:active { transform: scale(0.9); }
+  .topbar-icons { display: flex; gap: 12px; }
+
+  /* ---------- 왼쪽: 토슴이 무대 ---------- */
+  .left-area {
+    grid-area: left;
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px;
+  }
+  .toseumi-wrap {
+    position: relative;
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    max-height: 70vh;
+  }
+  .toseumi {
+    width: auto;
+    height: 70vh;
+    max-height: 480px;
+    animation: float 3.5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  /* 흔드는 손 살짝 흔들기 */
+  .toseumi #waving-arm {
+    transform-origin: 410px 230px;
+    animation: wave 1.6s ease-in-out infinite;
+  }
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-12deg); }
+  }
+
+  .speech-bubble {
+    background: #fff;
+    color: #5A2A40;
+    padding: 12px 22px;
+    border-radius: 24px;
+    font-size: 18px; font-weight: 800;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    position: relative;
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 90%;
+    text-align: center;
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    border: 10px solid transparent; border-bottom-color: #fff;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ---------- 오른쪽: 메뉴 영역 ---------- */
+  .right-area {
+    grid-area: right;
+    display: flex; flex-direction: column;
+    gap: 14px;
+    padding: 4px;
+  }
+
+  /* 컬렉션 띠 */
+  .collection {
+    display: flex; justify-content: space-around;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 10px 16px;
+    backdrop-filter: blur(10px);
+    font-size: 14px; font-weight: 800;
+  }
+  .collection-item { display: flex; align-items: center; gap: 6px; }
+
+  /* 일일 보너스 */
+  .daily-bonus {
+    background: linear-gradient(135deg, #FFE08A, #FFB347);
+    color: #5A2A40;
+    border-radius: 18px;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 900; font-size: 14px;
+    box-shadow: 0 4px 16px rgba(255,200,80,0.45);
+    cursor: pointer;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.025); }
+  }
+
+  /* 미니게임 3개 */
+  .minigames {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+  }
+  .game-btn {
+    background: linear-gradient(160deg, #FF9FBF 0%, #FFC1D6 100%);
+    border: none; border-radius: 22px;
+    color: #fff;
+    font-family: inherit; font-weight: 900;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #C66888, 0 8px 18px rgba(0,0,0,0.25);
+    transition: all 0.15s;
+    padding: 12px 8px;
+    min-height: 0;
+  }
+  .game-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #C66888, 0 4px 8px rgba(0,0,0,0.25);
+  }
+  .game-btn .emoji { font-size: clamp(36px, 6vw, 56px); line-height: 1; }
+  .game-btn .label { font-size: clamp(13px, 1.6vw, 17px); }
+  .game-btn:nth-child(2) {
+    background: linear-gradient(160deg, #B19CFF, #D4C5FF);
+    box-shadow: 0 6px 0 #7E68C7, 0 8px 18px rgba(0,0,0,0.25);
+  }
+  .game-btn:nth-child(2):active { box-shadow: 0 2px 0 #7E68C7, 0 4px 8px rgba(0,0,0,0.25); }
+  .game-btn:nth-child(3) {
+    background: linear-gradient(160deg, #7FD8C0, #B8F0DD);
+    box-shadow: 0 6px 0 #4FA088, 0 8px 18px rgba(0,0,0,0.25);
+  }
+  .game-btn:nth-child(3):active { box-shadow: 0 2px 0 #4FA088, 0 4px 8px rgba(0,0,0,0.25); }
+
+  /* 핵심 공간 2개 */
+  .spaces {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .space-btn {
+    background: rgba(255, 250, 245, 0.96);
+    color: #5A2A40;
+    border: none; border-radius: 20px;
+    font-family: inherit; font-weight: 900;
+    padding: 14px 8px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #D8AABE, 0 6px 14px rgba(0,0,0,0.2);
+    transition: all 0.15s;
+    font-size: clamp(14px, 1.6vw, 17px);
+  }
+  .space-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #D8AABE, 0 3px 8px rgba(0,0,0,0.2);
+  }
+  .space-btn .emoji { font-size: clamp(28px, 3.5vw, 40px); }
+  .space-btn .sub { font-size: 11px; color: #999; font-weight: 700; display: block; }
+  .space-btn .col { display: flex; flex-direction: column; align-items: flex-start; }
+
+  /* 디버그 */
+  .debug {
+    position: fixed; bottom: 4px; right: 8px;
+    font-size: 10px; opacity: 0.4; color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<!-- 세로 모드일 때 회전 안내 -->
+<div class="rotate-notice">
+  <div class="phone">📱</div>
+  <h2>화면을 가로로 돌려주세요!</h2>
+  <p>레인보우 스케치북은 가로 모드에서 가장 예뻐요 🌈</p>
+</div>
+
+<!-- 메인 무대 -->
+<div class="stage">
+  <div class="stars" id="stars"></div>
+
+  <div class="layout">
+    <!-- 상단바 -->
+    <div class="topbar">
+      <button class="icon-btn" aria-label="설정">⚙️</button>
+      <div class="topbar-title">🌈 레인보우 스케치북</div>
+      <div class="topbar-icons">
+        <button class="icon-btn" aria-label="알림">🔔</button>
+      </div>
+    </div>
+
+    <!-- 왼쪽: 토슴이 -->
+    <div class="left-area">
+      <div class="toseumi-wrap">
+        <!-- Toseum-i v0.2 SVG (waving guide pose) -->
+        <svg class="toseumi" viewBox="0 0 500 520" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bodyGrad2" cx="50%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#FFEEF3"/>
+              <stop offset="50%" stop-color="#FFD8E2"/>
+              <stop offset="100%" stop-color="#FFB6C8"/>
+            </radialGradient>
+            <radialGradient id="bellyGrad" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="100%" stop-color="#FFF4F7"/>
+            </radialGradient>
+            <radialGradient id="cheekGrad2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FF8FAB" stop-opacity="0.7"/>
+              <stop offset="60%" stop-color="#FFA0B4" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#FFA0B4" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="earInner2" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#FFD0DD"/>
+              <stop offset="100%" stop-color="#FF95B0"/>
+            </radialGradient>
+            <radialGradient id="starGrad" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#FFFAE0"/>
+              <stop offset="100%" stop-color="#FFD93D"/>
+            </radialGradient>
+            <linearGradient id="eyeShine2" x1="20%" y1="20%" x2="80%" y2="80%">
+              <stop offset="0%" stop-color="#5A3A5A"/>
+              <stop offset="100%" stop-color="#1A0F2E"/>
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="250" cy="500" rx="115" ry="12" fill="#000" opacity="0.1"/>
+          <ellipse cx="250" cy="370" rx="135" ry="115" fill="url(#bodyGrad2)"/>
+          <ellipse cx="250" cy="395" rx="80" ry="68" fill="url(#bellyGrad)"/>
+          <ellipse cx="195" cy="475" rx="34" ry="16" fill="#FFFFFF"/>
+          <ellipse cx="305" cy="475" rx="34" ry="16" fill="#FFFFFF"/>
+          <ellipse cx="195" cy="476" rx="14" ry="6" fill="#FFA0B4" opacity="0.5"/>
+          <ellipse cx="305" cy="476" rx="14" ry="6" fill="#FFA0B4" opacity="0.5"/>
+          <ellipse cx="125" cy="345" rx="28" ry="38" fill="url(#bodyGrad2)" transform="rotate(-15 125 345)"/>
+          <circle cx="113" cy="378" r="14" fill="url(#bodyGrad2)"/>
+
+          <!-- waving arm group (animated) -->
+          <g id="waving-arm">
+            <ellipse cx="395" cy="240" rx="26" ry="48" fill="url(#bodyGrad2)" transform="rotate(28 395 240)"/>
+            <circle cx="425" cy="195" r="22" fill="url(#bodyGrad2)"/>
+            <path d="M 415 188 Q 418 183 421 188" stroke="#FF95B0" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M 425 185 Q 428 180 431 185" stroke="#FF95B0" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M 435 188 Q 438 183 441 188" stroke="#FF95B0" stroke-width="1.5" fill="none" opacity="0.6"/>
+          </g>
+
+          <ellipse cx="250" cy="200" rx="135" ry="128" fill="url(#bodyGrad2)"/>
+          <ellipse cx="170" cy="80" rx="38" ry="68" fill="url(#bodyGrad2)" transform="rotate(-15 170 80)"/>
+          <ellipse cx="170" cy="88" rx="22" ry="48" fill="url(#earInner2)" transform="rotate(-15 170 88)"/>
+          <g transform="translate(165 90) rotate(-15) scale(1.1)">
+            <path d="M 0 -12 L 3.5 -3.5 L 12 -3.5 L 5 2 L 8 11 L 0 5.5 L -8 11 L -5 2 L -12 -3.5 L -3.5 -3.5 Z"
+                  fill="url(#starGrad)" stroke="#FFB300" stroke-width="0.8"/>
+          </g>
+          <ellipse cx="330" cy="80" rx="38" ry="68" fill="url(#bodyGrad2)" transform="rotate(15 330 80)"/>
+          <ellipse cx="330" cy="88" rx="22" ry="48" fill="url(#earInner2)" transform="rotate(15 330 88)"/>
+          <g transform="translate(335 90) rotate(15) scale(1.1)">
+            <path d="M 0 -12 L 3.5 -3.5 L 12 -3.5 L 5 2 L 8 11 L 0 5.5 L -8 11 L -5 2 L -12 -3.5 L -3.5 -3.5 Z"
+                  fill="url(#starGrad)" stroke="#FFB300" stroke-width="0.8"/>
+          </g>
+          <ellipse cx="155" cy="235" rx="28" ry="18" fill="url(#cheekGrad2)"/>
+          <ellipse cx="345" cy="235" rx="28" ry="18" fill="url(#cheekGrad2)"/>
+          <ellipse class="eye" cx="200" cy="200" rx="24" ry="30" fill="url(#eyeShine2)"/>
+          <ellipse cx="194" cy="190" rx="9" ry="11" fill="#FFFFFF"/>
+          <circle cx="208" cy="208" r="4" fill="#FFFFFF"/>
+          <circle cx="205" cy="195" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+          <ellipse class="eye" cx="300" cy="200" rx="24" ry="30" fill="url(#eyeShine2)"/>
+          <ellipse cx="294" cy="190" rx="9" ry="11" fill="#FFFFFF"/>
+          <circle cx="308" cy="208" r="4" fill="#FFFFFF"/>
+          <circle cx="305" cy="195" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+          <ellipse cx="250" cy="240" rx="4" ry="3" fill="#D14B7A" opacity="0.85"/>
+          <path d="M 232 258 Q 250 274 268 258" stroke="#7A2A4A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="250" cy="265" rx="3" ry="2" fill="#FF8FAB" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <div class="speech-bubble" id="bubble">또 만났어요! 🌈</div>
+    </div>
+
+    <!-- 오른쪽: 메뉴 -->
+    <div class="right-area">
+      <div class="collection">
+        <div class="collection-item">🖍 <span>0/64</span></div>
+        <div class="collection-item">🌟 <span>0</span></div>
+        <div class="collection-item">💎 <span>0</span></div>
+      </div>
+
+      <div class="daily-bonus">🎁 오늘의 첫 게임 — 보상 2배!</div>
+
+      <div class="minigames">
+        <button class="game-btn" onclick="playClick(this, '카드 맞추기')">
+          <span class="emoji">🃏</span>
+          <span class="label">카드 맞추기</span>
+        </button>
+        <button class="game-btn" onclick="playClick(this, '가위바위보')">
+          <span class="emoji">✊</span>
+          <span class="label">가위바위보</span>
+        </button>
+        <button class="game-btn" onclick="playClick(this, '친구 인사')">
+          <span class="emoji">🐹</span>
+          <span class="label">친구 인사</span>
+        </button>
+      </div>
+
+      <div class="spaces">
+        <button class="space-btn" onclick="playClick(this, '내 행성')">
+          <span class="emoji">🎨</span>
+          <div class="col">
+            <span>내 행성</span>
+            <span class="sub">아트룸</span>
+          </div>
+        </button>
+        <button class="space-btn" onclick="playClick(this, '컬러도감')">
+          <span class="emoji">📚</span>
+          <div class="col">
+            <span>컬러도감</span>
+            <span class="sub">0 / 64</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="debug">v0.2 · landscape</div>
+</div>
+
+<script>
+  // ===== 별빛 자동 생성 =====
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    stars.appendChild(s);
+  }
+  // 큰 별 몇 개
+  for (let i = 0; i < 6; i++) {
+    const big = document.createElement('div');
+    big.className = 'big-star';
+    big.textContent = '✦';
+    big.style.left = Math.random() * 95 + '%';
+    big.style.top = Math.random() * 80 + 5 + '%';
+    big.style.animationDelay = Math.random() * 3 + 's';
+    stars.appendChild(big);
+  }
+
+  // ===== 토슴이 인사말 풀 (다양화) =====
+  const greetings = [
+    '또 만났어요! 🌈',
+    '오늘은 무지개 그릴까요?',
+    '토슴이가 기다렸어요 🐰',
+    '어떤 색을 모을까요?',
+    '오늘도 반가워요! ✨',
+    '같이 놀아요~ 💗',
+    '별나라가 보고 싶었대요 🌌',
+    '토슴~ 토슴~ 🎶',
+    '오늘은 어떤 그림 그릴까요?',
+    '반짝반짝 별나라에 어서오세요!',
+  ];
+  const bubble = document.getElementById('bubble');
+  bubble.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+
+  // ===== 클릭 시 인사 변경 (다양한 톤) =====
+  const clickResponses = {
+    '카드 맞추기': ['카드 뒤집어볼까요? 🃏', '같은 그림 찾기 시작!'],
+    '가위바위보': ['이길 수 있을까요? ✊', '두근두근! 한 판 해요'],
+    '친구 인사': ['친구들이 기다려요 🐹', '하이파이브 하러 가요!'],
+    '내 행성': ['내 그림 보러 가요 🎨', '오늘은 행성이 더 빛나네요'],
+    '컬러도감': ['모은 색깔 자랑해요 📚', '오늘은 몇 개 모았을까?'],
+  };
+  function playClick(btn, name) {
+    const pool = clickResponses[name] || [name + '!'];
+    const msg = pool[Math.floor(Math.random() * pool.length)];
+    bubble.textContent = msg;
+    bubble.style.animation = 'none';
+    void bubble.offsetWidth;
+    bubble.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  }
+
+  // ===== 토슴이 눈 깜빡임 =====
+  function blink() {
+    const eyes = document.querySelectorAll('.toseumi .eye');
+    eyes.forEach(e => { e.style.transform = 'scaleY(0.1)'; e.style.transformOrigin = 'center'; e.style.transition = 'transform 0.12s'; });
+    setTimeout(() => eyes.forEach(e => e.style.transform = 'scaleY(1)'), 150);
+    setTimeout(blink, 3000 + Math.random() * 2500);
+  }
+  setTimeout(blink, 2000);
+</script>
+
+</body>
+</html>

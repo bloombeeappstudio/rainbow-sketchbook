@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">레인보우 스케치북</string>
+    <string name="title_activity_main">레인보우 스케치북</string>
+    <string name="package_name">com.rainbow.sketchbook</string>
+    <string name="custom_url_scheme">com.rainbow.sketchbook</string>
+</resources>

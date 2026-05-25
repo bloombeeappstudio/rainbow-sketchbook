@@ -116,7 +116,7 @@ If this Policy changes, we will notify users with the next App update and in-app
 
 For questions about this Policy or our data practices, please contact:
 
-- **Email**: bloombee.apps@gmail.com
+- **Email**: bloombee.appstudio@gmail.com
 - **Response time**: Within 7 business days
 
 ---

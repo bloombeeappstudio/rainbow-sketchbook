@@ -86,5 +86,5 @@ These Terms are effective from **May 22, 2026**.
 ---
 
 **Contact**:
-- Email: bloombee.apps@gmail.com
+- Email: bloombee.appstudio@gmail.com
 - Response time: Within 7 business days

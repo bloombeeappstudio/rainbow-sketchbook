@@ -1,0 +1,13 @@
+{
+  "appId": "com.rainbow.sketchbook",
+  "appName": "레인보우 스케치북",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>레인보우 스케치북 — 토슴이의 이야기</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    user-select: none;
+    background: #0F0820;
+  }
+
+  /* ---------- 세로 모드 안내 (터치 디바이스만) ---------- */
+  .rotate-notice { display: none; }
+  @media (orientation: portrait) and (pointer: coarse) and (hover: none) {
+    .rotate-notice {
+      display: flex;
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #4A2D6E, #2C1B47);
+      align-items: center; justify-content: center; flex-direction: column;
+      text-align: center; padding: 40px;
+    }
+    .rotate-notice .phone {
+      font-size: 80px;
+      animation: rotate 2s ease-in-out infinite;
+      margin-bottom: 24px;
+    }
+    @keyframes rotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-90deg); }
+    }
+    .stage { display: none; }
+  }
+
+  /* ---------- 무대 ---------- */
+  .stage {
+    position: fixed; inset: 0;
+    overflow: hidden;
+  }
+
+  /* ---------- 슬라이드 컨테이너 ---------- */
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-in-out;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* 페이지별 배경 */
+  .slide[data-bg="cosmic-bright"] {
+    background:
+      radial-gradient(ellipse at 30% 20%, #A78BD8 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, #FFB6C8 0%, transparent 60%),
+      linear-gradient(180deg, #4A2D8E 0%, #2C1B47 100%);
+  }
+  .slide[data-bg="cosmic-warm"] {
+    background:
+      radial-gradient(ellipse at 50% 50%, #FFC0CB 0%, transparent 70%),
+      linear-gradient(180deg, #6B3F8F 0%, #3C2161 100%);
+  }
+  .slide[data-bg="cosmic-dark"] {
+    background:
+      radial-gradient(ellipse at 50% 50%, #5A4870 0%, transparent 60%),
+      linear-gradient(180deg, #2A1838 0%, #0F0820 100%);
+    filter: saturate(0.4);
+  }
+  .slide[data-bg="cosmic-hopeful"] {
+    background:
+      radial-gradient(ellipse at 30% 30%, #FFB6C8 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 70%, #B19CFF 0%, transparent 60%),
+      linear-gradient(180deg, #5B3A8C 0%, #2C1B47 100%);
+  }
+  .slide[data-bg="rainbow-burst"] {
+    background:
+      conic-gradient(from 0deg at 50% 50%,
+        rgba(255,150,180,0.3) 0deg,
+        rgba(255,210,120,0.3) 60deg,
+        rgba(255,255,150,0.3) 120deg,
+        rgba(150,255,200,0.3) 180deg,
+        rgba(150,200,255,0.3) 240deg,
+        rgba(200,150,255,0.3) 300deg,
+        rgba(255,150,180,0.3) 360deg
+      ),
+      linear-gradient(180deg, #5B3A8C 0%, #2C1B47 100%);
+    animation: rotateRainbow 20s linear infinite;
+  }
+  @keyframes rotateRainbow {
+    0% { background-position: 0% 0%; transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .slide[data-bg="title-splash"] {
+    background:
+      radial-gradient(ellipse at 50% 50%, #6B47A8 0%, transparent 60%),
+      linear-gradient(180deg, #1A0F2E 0%, #0F0820 100%);
+  }
+
+  /* ---------- 별빛 ---------- */
+  .stars { position: absolute; inset: 0; pointer-events: none; }
+  .star {
+    position: absolute; background: #fff; border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* ---------- 페이지 콘텐츠 ---------- */
+  .page-content {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    padding: 20px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .left-panel, .right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  .toseumi-img {
+    width: auto;
+    max-width: 90%;
+    max-height: 70vh;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+    animation: floatGentle 4s ease-in-out infinite;
+  }
+  @keyframes floatGentle {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+  }
+  .toseumi-img.entering {
+    animation: enter 1s cubic-bezier(0.34, 1.56, 0.64, 1), floatGentle 4s ease-in-out infinite 1s;
+  }
+  @keyframes enter {
+    0% { transform: translateY(50px) scale(0.7); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .story-text {
+    font-size: clamp(22px, 3.2vw, 36px);
+    font-weight: 800;
+    line-height: 1.5;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    max-width: 90%;
+    animation: textIn 1s ease-out 0.3s both;
+  }
+  @keyframes textIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- 큰 무지개 / 색 사라짐 효과 ---------- */
+  .rainbow-large {
+    position: absolute;
+    width: 60vh; height: 60vh;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ---------- 타이틀 스플래시 ---------- */
+  .title-splash {
+    text-align: center;
+    width: 100%;
+    padding: 0 40px;
+  }
+  .title-splash .game-title {
+    font-size: clamp(48px, 7vw, 84px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #FFB6C8, #FFD93D, #B8F0DD, #B19CFF, #FFB6C8);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 3s linear infinite, titleIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes titleIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .title-splash .subtitle {
+    font-size: clamp(16px, 2vw, 22px);
+    color: #FFE4EC;
+    margin-top: 12px;
+    opacity: 0.9;
+    animation: textIn 1s ease-out 0.8s both;
+  }
+
+  .title-toseumi {
+    width: auto;
+    max-width: 280px;
+    max-height: 35vh;
+    margin: 24px auto;
+    display: block;
+    animation: enter 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both, floatGentle 4s ease-in-out infinite 1.3s;
+  }
+
+  .start-btn {
+    margin-top: 24px;
+    padding: 18px 56px;
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 900;
+    font-family: inherit;
+    color: #fff;
+    background: linear-gradient(135deg, #FF8FB1, #B19CFF, #7FD8C0);
+    background-size: 200% auto;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #6B47A8, 0 14px 30px rgba(0,0,0,0.3);
+    transition: all 0.15s;
+    animation: shimmer 4s linear infinite, btnIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s both;
+  }
+  @keyframes btnIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .start-btn:hover { transform: translateY(-2px); }
+  .start-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 2px 0 #6B47A8, 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  /* ---------- 컨트롤 (하단/Skip) ---------- */
+  .controls {
+    position: absolute;
+    bottom: 24px; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 32px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .controls > * { pointer-events: auto; }
+
+  .indicator {
+    display: flex; gap: 8px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 30px;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.3s;
+  }
+  .dot.active {
+    background: #FFD93D;
+    width: 28px; border-radius: 6px;
+  }
+
+  .nav-btn {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+  }
+  .nav-btn:active { transform: scale(0.9); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .skip-btn {
+    position: absolute;
+    top: 24px; right: 24px;
+    z-index: 10;
+    padding: 10px 20px;
+    font-size: 14px; font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .skip-btn:hover { color: #fff; background: rgba(0,0,0,0.5); }
+
+  /* 마지막 (스플래시) 슬라이드에선 컨트롤 숨김 */
+  .slide.is-splash ~ .controls { opacity: 0; pointer-events: none; }
+
+  /* ---------- 작은 무지개 데코 ---------- */
+  .deco-rainbow {
+    position: absolute;
+    width: 200px; height: 100px;
+    border-radius: 200px 200px 0 0;
+    background:
+      radial-gradient(circle at center bottom,
+        transparent 50%, transparent 50%,
+        #FF6B9D 51%, #FF6B9D 56%,
+        #FFB347 56%, #FFB347 62%,
+        #FFE066 62%, #FFE066 68%,
+        #95E1D3 68%, #95E1D3 74%,
+        #B19CFF 74%, #B19CFF 80%,
+        transparent 81%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .debug {
+    position: fixed; top: 4px; left: 8px;
+    font-size: 10px; opacity: 0.4; color: #fff;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="rotate-notice">
+  <div class="phone">📱</div>
+  <h2 style="font-size:24px;margin-bottom:8px;">화면을 가로로 돌려주세요!</h2>
+  <p style="font-size:16px;opacity:0.8;">레인보우 스케치북은 가로 모드에서 가장 예뻐요 🌈</p>
+</div>
+
+<div class="stage">
+  <div class="stars" id="stars"></div>
+
+  <button class="skip-btn" onclick="skipToEnd()" id="skipBtn">건너뛰기 →</button>
+
+  <!-- ============= 슬라이드 1: 우주 별나라 ============= -->
+  <div class="slide active" data-bg="cosmic-bright" data-page="1">
+    <div class="page-content">
+      <div class="left-panel">
+        <svg width="80%" height="60%" viewBox="0 0 400 300" style="max-width:400px;max-height:300px;">
+          <!-- 반짝이는 별나라 (작은 행성들) -->
+          <circle cx="100" cy="100" r="50" fill="#FFB6C8" opacity="0.7"/>
+          <circle cx="100" cy="100" r="50" fill="url(#planetGrad1)"/>
+          <circle cx="280" cy="180" r="35" fill="url(#planetGrad2)"/>
+          <circle cx="200" cy="80" r="25" fill="url(#planetGrad3)"/>
+          <defs>
+            <radialGradient id="planetGrad1"><stop offset="0%" stop-color="#FFD8E2"/><stop offset="100%" stop-color="#FF8FAB"/></radialGradient>
+            <radialGradient id="planetGrad2"><stop offset="0%" stop-color="#FFE08A"/><stop offset="100%" stop-color="#FFB347"/></radialGradient>
+            <radialGradient id="planetGrad3"><stop offset="0%" stop-color="#B8F0DD"/><stop offset="100%" stop-color="#7FD8C0"/></radialGradient>
+          </defs>
+          <!-- 작은 별빛 -->
+          <text x="50" y="50" fill="#FFD93D" font-size="20">✦</text>
+          <text x="320" y="100" fill="#FFD93D" font-size="24">✦</text>
+          <text x="350" y="240" fill="#FFD93D" font-size="18">✦</text>
+          <text x="60" y="220" fill="#FFD93D" font-size="22">✦</text>
+        </svg>
+      </div>
+      <div class="right-panel">
+        <div class="story-text">
+          옛날 옛날, 우주에<br>
+          <span style="color:#FFD93D;">무지개 별나라</span>가<br>
+          있었어요 🌈
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 슬라이드 2: 토슴이 등장 ============= -->
+  <div class="slide" data-bg="cosmic-warm" data-page="2">
+    <div class="page-content">
+      <div class="left-panel">
+        <img class="toseumi-img" src="../assets/characters/toseumi-default.png" alt="토슴이">
+      </div>
+      <div class="right-panel">
+        <div class="story-text">
+          그곳엔 분홍 토끼<br>
+          <span style="color:#FFB6C8;">토슴이</span>가<br>
+          살고 있었어요 🐰
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 슬라이드 3: 색이 사라진 별나라 ============= -->
+  <div class="slide" data-bg="cosmic-dark" data-page="3">
+    <div class="page-content">
+      <div class="left-panel">
+        <img class="toseumi-img" src="../assets/characters/toseumi-default.png" alt="토슴이"
+             style="filter: saturate(0.3) brightness(0.7) drop-shadow(0 10px 30px rgba(0,0,0,0.6));">
+      </div>
+      <div class="right-panel">
+        <div class="story-text">
+          그런데 어느 날,<br>
+          별나라의 <span style="color:#888;">색이 모두</span><br>
+          사라졌어요 💧
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 슬라이드 4: 친구를 부름 ============= -->
+  <div class="slide" data-bg="cosmic-hopeful" data-page="4">
+    <div class="page-content">
+      <div class="left-panel">
+        <img class="toseumi-img" src="../assets/characters/toseumi-wave.png" alt="토슴이가 손 흔들기">
+      </div>
+      <div class="right-panel">
+        <div class="story-text">
+          토슴이가 멀리 있는<br>
+          친구를 떠올렸어요.<br>
+          <span style="color:#FFD93D;">바로 너!</span> ✨
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 슬라이드 5: 모험 시작 ============= -->
+  <div class="slide" data-bg="rainbow-burst" data-page="5">
+    <div class="page-content">
+      <div class="left-panel">
+        <img class="toseumi-img" src="../assets/characters/toseumi-magic.png" alt="토슴이 마법봉">
+      </div>
+      <div class="right-panel">
+        <div class="story-text">
+          우리 함께<br>
+          <span style="background: linear-gradient(90deg, #FF6B9D, #FFB347, #FFE066, #95E1D3, #B19CFF); -webkit-background-clip: text; background-clip: text; color: transparent;">무지개</span>를<br>
+          그려줄래요? 🎨
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= 슬라이드 6: 게임 타이틀 스플래시 ============= -->
+  <div class="slide is-splash" data-bg="title-splash" data-page="6">
+    <div class="title-splash">
+      <img class="title-toseumi" src="../assets/characters/toseumi-hero.png" alt="토슴이">
+      <div class="game-title">🌈 레인보우 스케치북</div>
+      <div class="subtitle">토슴이와 함께하는 우주 그림 놀이</div>
+      <button class="start-btn" onclick="startGame()">시작하기 ✨</button>
+    </div>
+  </div>
+
+  <!-- ============= 컨트롤 (하단) ============= -->
+  <div class="controls" id="controls">
+    <button class="nav-btn" onclick="prevSlide()" id="prevBtn" disabled>‹</button>
+    <div class="indicator" id="indicator">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <button class="nav-btn" onclick="nextSlide()" id="nextBtn">›</button>
+  </div>
+
+  <div class="debug">v0.4 · onboarding</div>
+</div>
+
+<script>
+  // ===== 별빛 자동 생성 =====
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 100; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    stars.appendChild(s);
+  }
+
+  // ===== 슬라이드 컨트롤 =====
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.indicator .dot');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const controls = document.getElementById('controls');
+  const skipBtn = document.getElementById('skipBtn');
+
+  let current = 0;
+  const STORY_LENGTH = 5;          // 1~5는 스토리, 6은 스플래시
+  const TOTAL = slides.length;     // 6
+  let autoTimer = null;
+
+  function showSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+
+    // 토슴이 이미지 등장 애니메이션 재실행
+    const img = slides[i].querySelector('.toseumi-img');
+    if (img) {
+      img.classList.remove('entering');
+      void img.offsetWidth;
+      img.classList.add('entering');
+    }
+
+    // 인디케이터
+    if (i < STORY_LENGTH) {
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    }
+
+    // 컨트롤/Skip 표시 여부
+    if (i === STORY_LENGTH) {
+      // 마지막 슬라이드 = 스플래시
+      controls.style.opacity = '0';
+      controls.style.pointerEvents = 'none';
+      skipBtn.style.display = 'none';
+      clearTimeout(autoTimer);
+    } else {
+      controls.style.opacity = '1';
+      controls.style.pointerEvents = 'auto';
+      skipBtn.style.display = 'block';
+
+      prevBtn.disabled = (i === 0);
+      nextBtn.disabled = false;
+
+      // 자동 진행 (6초)
+      clearTimeout(autoTimer);
+      autoTimer = setTimeout(() => {
+        if (current === i) nextSlide();
+      }, 6000);
+    }
+
+    current = i;
+  }
+
+  function nextSlide() {
+    if (current < TOTAL - 1) showSlide(current + 1);
+  }
+  function prevSlide() {
+    if (current > 0) showSlide(current - 1);
+  }
+  function skipToEnd() {
+    showSlide(STORY_LENGTH); // 인덱스 5 = 스플래시
+  }
+  function startGame() {
+    // 메인 화면으로 이동
+    window.location.href = '03-main-real-toseumi.html';
+  }
+
+  // 키보드 지원 (데스크톱 테스트용)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'Escape') skipToEnd();
+  });
+
+  // 화면 어디든 클릭으로 다음 (스플래시 제외)
+  document.querySelector('.stage').addEventListener('click', (e) => {
+    // 버튼 누른 거면 무시
+    if (e.target.closest('button') || e.target.closest('.indicator')) return;
+    if (current < STORY_LENGTH) nextSlide();
+  });
+
+  // 초기 자동 진행
+  showSlide(0);
+
+  // 모든 토슴이 이미지 미리 로드
+  ['default','wave','crayon','brush','cape','magic','hero'].forEach(k => {
+    const img = new Image();
+    img.src = `../assets/characters/toseumi-${k}.png`;
+  });
+</script>
+
+</body>
+</html>

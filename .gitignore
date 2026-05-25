@@ -33,3 +33,6 @@ desktop.ini
 
 # Claude 임시
 .claude-tmp/
+
+# 임시 백업 (push 불필요)
+.backup-pre-batch/

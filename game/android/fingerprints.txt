@@ -1,0 +1,6 @@
+﻿# Rainbow Sketchbook - Upload Keystore Fingerprints
+# Generated: 2026-05-23 17:50:41
+# Package: com.rainbow.sketchbook
+
+	 SHA1: 02:36:EE:FC:04:43:2B:05:6F:9E:CC:54:6F:D6:62:15:47:87:B0:4F
+	 SHA256: 2D:81:52:85:04:E4:A9:8C:F0:48:35:3D:2C:95:14:10:A5:06:9C:CA:23:D7:86:E2:E5:11:86:EA:7C:44:23:CE

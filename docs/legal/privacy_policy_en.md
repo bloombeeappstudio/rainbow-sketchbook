@@ -84,7 +84,7 @@ We do **NOT** collect:
 
 **No advertising is shown.** Firebase data is used solely to improve the App and is never shared with third-party ad networks.
 
-Data retention: **2 months** (minimum Firebase Console setting)
+Data retention: **14 months** (maximum Firebase Console setting — for long-term usage analytics)
 
 ## 7-1. User Artwork Sharing (Optional)
 

@@ -67,7 +67,7 @@ npx cap sync android
 ### Firebase Console 작업
 1. 프로젝트 설정 (좌상단 톱니바퀴) → **프로젝트 설정**
 2. **개인정보 보호** 탭 또는 **데이터 보관** 탭
-3. **사용자 데이터 보관 기간**: **2개월** (최소)
+3. **사용자 데이터 보관 기간**: **14개월** (최대 — 대표님 결정 2026-05-25, 장기 사용 통계 활용)
 4. **Google 신호 데이터** : **사용 안 함** ⚠️ (광고 타겟팅 X)
 
 ### 광고 ID 수집 비활성화 (코드 + Manifest)
@@ -138,7 +138,7 @@ npx cap sync android
 - [ ] AAID(광고 ID) 수집 비활성화 (코드 + Manifest 적용)
 - [ ] Personalized advertising 차단 (Firebase Console)
 - [ ] Google 신호 데이터 사용 안 함
-- [ ] 데이터 보관 2개월
+- [ ] 데이터 보관 14개월 (Firebase Console 최대 설정)
 - [ ] 광고 네트워크 통합 안 함
 - [ ] User Property `audience = children_only` 설정 (코드 자동)
 - [ ] Data Safety 양식에 "익명 분석" 명시 (Phase 3 작업)
